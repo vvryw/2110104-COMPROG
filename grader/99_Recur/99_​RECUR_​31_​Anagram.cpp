@@ -1,27 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-string s;
+string input;
+vector <bool> visited;
 set <string> ans;
 
-int checked(int arr[], string now){
-    if(now.size() == s.size()) ans.insert(now);
-    
-    for(int i=0; i<s.size(); i++){
-        if(arr[i]) continue;
-        arr[i] = 1;
-        checked(arr, now + s[i]);
-        arr[i] = 0;
+void permu(int step, int size, string s){
+    if(step == size){
+        ans.insert(s);
+        return;
     }
-    return 0;
+
+    for(int i=0; i<size; i++){
+        if(!visited[i]){
+            visited[i] = true;
+            permu(step+1, size, s+input[i]);
+            visited[i] = false;
+        }
+    }
 }
 
 int main(){
-    cin >> s;
-    int arr[s.size()];
-    memset(arr, 0, sizeof(arr));
-    string now = "";
-    checked(arr, now);
-    for(auto i : ans) cout << i << ' ';
+    cin >> input;
+    int size = input.size();
+    visited.resize(size, false);
+    permu(0, size, "");
+
+    for(auto e : ans) cout << e << ' ';
+
     return 0;
 }
